@@ -3,8 +3,7 @@
 #define N 4
 
 int solucao_valida(int *linhas, int linha, int coluna){
-    if (coluna == 0)
-        return 1;
+    if (coluna == 0) return 1;
     for (int i = 0; i < coluna; i++) if ((linhas[i] == linha + coluna - i) || (linhas[i] == linha - coluna + i) || (linhas[i] == linha)){
         return 0;
     }
@@ -13,7 +12,6 @@ int solucao_valida(int *linhas, int linha, int coluna){
 }
 
 void imprime_solucao(int *linhas) {
-
     printf("\n----------------\n");
     for (int i = 0; i < N; i++){
         for (int j = 0; j < N; j++){
@@ -24,16 +22,15 @@ void imprime_solucao(int *linhas) {
     }
 }
  
-void ndamas(int *linhas, int y){
-    for (int i = 0; i < N; i++) if (solucao_valida(linhas, i, y)) {
-        linhas[y] = i;
-        if (y == N-1) imprime_solucao(linhas);
-        else ndamas(linhas, y+1);
+void ndamas(int *linhas, int posicao_atual){
+    for (int i = 0; i < N; i++) if (solucao_valida(linhas, i, posicao_atual)) {
+        linhas[posicao_atual] = i;
+        if (posicao_atual == N-1) imprime_solucao(linhas);
+        else ndamas(linhas, posicao_atual+1);
     }
 }
 
 int main (){
-    
     int *linhas = (int *) calloc(N, sizeof(int));
     printf("\nSoluções:\n");
     ndamas(linhas,0);
