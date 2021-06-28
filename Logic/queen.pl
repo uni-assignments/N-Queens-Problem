@@ -1,4 +1,4 @@
-
+% Fatos
 diagonal([4,0,0,0]).
 diagonal([3,4,0,0]).
 diagonal([2,3,4,0]).
@@ -15,49 +15,33 @@ diagonal([0,4,3,2]).
 diagonal([0,0,4,3]).
 diagonal([0,0,0,4]).
 
+%Regras
 
-addElement(X, [], [X]).
-addElement(X, [Y | Rest], [X,Y | Rest]) :- X @< Y, !.
-addElement(X, [Y | Rest1], [Y | Rest2]) :- addElement(X, Rest1, Rest2).
-
-inserirFim(X, [], [X]).
-inserirFim(X, [Y], [Y,X]):- !.
-inserirFim(X, [Y | Rest1], [Y | Rest2]) :- inserirFim(X, Rest1, Rest2).
-
-mesmaLinha(L):-
-    sort(L, S),
-    length(L, X),
+mesmaLinha(Lista):-
+    sort(Lista, S),
+    length(Lista, X),
     length(S, Y),
     X > Y.
 
-matchingHelper([X|Xs], [Y|Ys], Index, ListofIndex) :-
+diferenca([], [], N, N).
+
+diferenca([X|ListaA], [X|ListaB], N, Count) :-
+    diferenca(ListaA, ListaB, N, Count).
+
+diferenca([X|ListaA], [Y|ListaB], N, Count) :-
     X \= Y,
-    Index2 is Index + 1,
-    matchingHelper(Xs, Ys, Index2, ListofIndex).
+    Count1 is Count + 1,
+    diferenca(ListaA, ListaB, N, Count1).
 
-
-hamming_([], [], N, N).
-
-hamming_([X|ListA], [X|ListB], N, Acc) :-
-    hamming_(ListA, ListB, N, Acc).
-
-hamming_([X|ListA], [Y|ListB], N, Acc) :-
-    X \= Y,
-    Acc1 is Acc + 1,
-    hamming_(ListA, ListB, N, Acc1).
-
-hamming(ListA, ListB, N) :-
-    hamming_(ListA, ListB, N, 0).
 
 mesmaDiagonal(ListaA):-
-    diagonal(X),
-    hamming(ListaA,X,N),
+    diagonal(Diagonal),
+    diferenca(ListaA,Diagonal,N,0),
     N =< 2.
 
-verificaSol(Lista):-
+verificaSolucao(Lista):-
     \+ mesmaDiagonal(Lista),
     \+ mesmaLinha(Lista).
-
 
 queen(Lista):-
     between(1, 4, W),
@@ -65,7 +49,7 @@ queen(Lista):-
     between(1, 4, Y),
     between(1, 4, Z),
     Lista = [W,X,Y,Z],
-    verificaSol(Lista).
+    verificaSolucao(Lista).
 
 
 
